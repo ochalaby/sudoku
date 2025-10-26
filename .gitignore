@@ -1,17 +1,74 @@
-# Maven build output
+####################################
+# Maven
+####################################
 target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
 
-# Logfiles
+####################################
+# Spring Boot
+####################################
+# Logbestanden
 logs/
 *.log
+*.out
 
-# IntelliJ IDEA / VS Code
+# Config-bestanden die lokaal kunnen verschillen
+application-local.properties
+application-dev.properties
+
+####################################
+# IntelliJ IDEA
+####################################
 .idea/
-.vscode/
+*.iws
 *.iml
+*.ipr
+out/
 
-# OS
+####################################
+# VS Code
+####################################
+.vscode/
+.history/
+.settings/
+
+####################################
+# Eclipse (voor als je ooit wisselt)
+####################################
+.project
+.classpath
+bin/
+
+####################################
+# OS / Systeem
+####################################
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
 
-# Optional: Lombok generated files
+####################################
+# Java
+####################################
 *.class
+*.jar
+*.war
+*.ear
+
+####################################
+# Tests & Reports
+####################################
+surefire-reports/
+test-output/
+
+####################################
+# Miscellaneous
+####################################
+# Temporary files
+*.tmp
+*.bak
+*.old

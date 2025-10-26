@@ -1,16 +1,11 @@
 package com.chalabysolutions.sudoku.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FieldDto {
     private int id;
     private String value;
-
-    public FieldDto (int id, String value){
-        this.id = id;
-        this.value = value;
-    }
 }

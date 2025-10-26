@@ -1,46 +1,45 @@
 package com.chalabysolutions.sudoku;
 
 import com.chalabysolutions.sudoku.entities.Field;
-import com.chalabysolutions.sudoku.entities.Square;
-import com.chalabysolutions.sudoku.services.SquareService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.chalabysolutions.sudoku.entities.Sudoku;
+import com.chalabysolutions.sudoku.services.SudokuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
-    private static final Logger logger = LogManager.getLogger(App.class);
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main( String[] args )
     {
-        String sudokuFile = "sudoku4.txt";
+        logger.info("Application started");
+
+        String sudokuFile = "sudokuFailed6.txt";
         String inputDir = System.getProperty("user.dir") + "\\input\\";
         String sudokuFilePath = inputDir + sudokuFile;
-        logger.info("input file = " + sudokuFilePath);
+        logger.info("input file = {}", sudokuFilePath);
 
         try {
-            Square startSudoku = SquareService.fileToSquare(sudokuFilePath);
-            Square solvedSudoku = SquareService.copySquare(startSudoku);
+            Sudoku startSudoku = SudokuService.fileToSudoku(sudokuFilePath);
+            logger.info("Start sudoku:\n{}", startSudoku);
 
-            SudokuSolver solver = new SudokuSolver(solvedSudoku);
-            for (int i = 1; i <= 3; i++) {
-                solver.solve();
-            }
+            SudokuSolver solver = new SudokuSolver();
+            Sudoku solvedSudoku = solver.solve(SudokuService.copySudoku(startSudoku));
 
-            logger.info("Resulting sudoku square:\n" + SquareService.squareToString(solvedSudoku));
+            logger.info("Resulting sudoku square:\n{}", solvedSudoku);
 
-            for (Field field : solvedSudoku.getFields().values()){
-                if (field.getValues().size() > 1){
-                    logger.info(field);
+            for (int i = 0; i < solvedSudoku.getSize(); i++) {
+                for (int j = 0; j < solvedSudoku.getSize(); j++) {
+                    Field field = solvedSudoku.getField(i, j);
+                    if (field.getPossibleValues().size() > 1){
+                        logger.info(String.valueOf(field));
+                    }
                 }
             }
 
-            SquareService.squaresToFile(startSudoku, solvedSudoku, sudokuFilePath);
+            SudokuService.sudokusToFile(startSudoku, solvedSudoku, sudokuFilePath);
         } catch (IOException ioe) {
             logger.error("IOException: %s%n", ioe);
         }

@@ -1,0 +1,17 @@
+# Maven build output
+target/
+
+# Logfiles
+logs/
+*.log
+
+# IntelliJ IDEA / VS Code
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+# Optional: Lombok generated files
+*.class

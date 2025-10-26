@@ -1,29 +1,25 @@
 package com.chalabysolutions.sudoku.user;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
+@Table(name = "user_entity")
 public class UserEntity {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
     @NotNull(message="{NotNull.User.firstName}")
     private String firstName;
 
-    @Column
     @NotNull(message="{NotNull.User.lastName}")
     private String lastName;
 
-    @Column
     @NotNull(message="{NotNull.User.email}")
     private String email;
 

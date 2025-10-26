@@ -1,0 +1,59 @@
+<table #sudokuTable>
+    <tbody>
+      <tr *ngFor="let row of rows">
+        <td *ngFor="let field of row.fields">
+          <!-- <input type="text" value ="{{field.value}}"/> -->
+          <input
+            type="text"
+            [(ngModel)]="field.value"
+            [ngClass]="tdClass(row.id, field.id)"
+            (focus)="onSelect(row.id, field.id)"
+          />
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+<button (click)="init()">Init</button>
+<button (click)="clear()">Clear</button>
+<button (click)="solve()">Solve</button>
+<button (click)="reset()">Reset</button>
+{{message}}
+
+<br>
+<br>
+<br>
+
+<table>
+  <tbody>
+  <tr>
+    <td>
+      <button class="number-button" (click)="numberClicked(1)">1</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(2)">2</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(3)">3</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(4)">4</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(5)">5</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(6)">6</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(7)">7</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(8)">8</button>
+    </td>
+    <td>
+      <button class="number-button" (click)="numberClicked(9)">9</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

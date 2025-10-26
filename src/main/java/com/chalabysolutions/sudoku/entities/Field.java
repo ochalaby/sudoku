@@ -1,41 +1,73 @@
 package com.chalabysolutions.sudoku.entities;
 
-import java.util.Collections;
+import lombok.Getter;
+
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
+@Getter
 public class Field {
-    private int rowIndex;
-    private int columnIndex;
+    private final int rowIndex;
+    private final int columnIndex;
 
-    private List<Integer> values;
+    private final Row row;
+    private final Column column;
+    private final SubSquare subSquare;
 
-    public Field(int rowIndex, int columnIndex, int value){
-        this(rowIndex, columnIndex,Collections.singletonList(value));
-    }
+    private Integer finalValue = null;
+    private final Set<Integer> possibleValues = new HashSet<>();
 
-    public Field(int rowIndex, int columnIndex, List<Integer> values){
+    public Field(int rowIndex, int columnIndex, Row row, Column column, SubSquare subSquare) {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
-        this.values = values;
+        this.row = row;
+        this.column = column;
+        this.subSquare = subSquare;
     }
 
-    public int getRowIndex() {
-        return rowIndex;
+    public Field (int rowIndex, int columnIndex, List<Integer> possibleValues) {
+        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
+        this.row = null;
+        this.column = null;
+        this.subSquare = null;
+        this.possibleValues.addAll(possibleValues);
     }
 
-    public int getColumnIndex() {
-        return columnIndex;
-    }
-
-    public List<Integer> getValues() {
-        return values;
-    }
-
-    public void removeValue(int value){
-        if (values.size() > 1){
-            values.remove(Integer.valueOf(value));
+    // Wordt aangeroepen door Sudoku tijdens initialisatie
+    public void initializePossibleValues(int size) {
+        possibleValues.clear();
+        for (int i = 1; i <= size; i++) {
+            possibleValues.add(i);
         }
+    }
+
+    public boolean isSolved() {
+        return finalValue != null;
+    }
+
+    public void setFinalValue(Integer value) {
+        this.finalValue = value;
+        possibleValues.clear();
+        if (value != null) {
+            possibleValues.add(value);
+        }
+    }
+
+    /** Verwijder een mogelijke waarde */
+    public void removePossibleValue(int value) {
+        if (!isSolved()) {
+            possibleValues.remove(value);
+            if (possibleValues.size() == 1){
+                setFinalValue(possibleValues.iterator().next());
+            }
+        }
+    }
+
+    @Override
+    public String toString(){
+        return "Field: ["+ this.rowIndex +","+ this.columnIndex +"] values: " + this.possibleValues;
     }
 
     @Override
@@ -43,19 +75,12 @@ public class Field {
         if (this == o) return true;
         if (!(o instanceof Field)) return false;
         Field field = (Field) o;
-        return getRowIndex() == field.getRowIndex() &&
-                getColumnIndex() == field.getColumnIndex() &&
-                getValues().containsAll(field.getValues()) &&
-                field.getValues().containsAll(getValues());
+        return rowIndex == field.rowIndex &&
+                columnIndex == field.columnIndex;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.rowIndex, this.columnIndex, this.values);
-    }
-
-    @Override
-    public String toString(){
-        return "Field: ["+ this.rowIndex +","+ this.columnIndex +"] values: " + this.values;
+        return java.util.Objects.hash(rowIndex, columnIndex);
     }
 }

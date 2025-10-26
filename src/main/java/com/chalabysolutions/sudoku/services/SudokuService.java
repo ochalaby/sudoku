@@ -142,27 +142,26 @@ public final class SudokuService {
     }
 
     public static boolean isValid(Sudoku sudoku) {
-        int size = sudoku.getSize();
 
         // Controleer alle rijen
         for (Row row : sudoku.getRows()) {
             if (!isSelectionValid(row.getFields())){
                 return false;
-            };
+            }
         }
 
         // Controleer alle kolommen
         for (Column column : sudoku.getColumns()) {
             if (!isSelectionValid(column.getFields())){
                 return false;
-            };
+            }
         }
 
         // Controleer alle sub-squares
         for (SubSquare subSquare : sudoku.getSubSquares()) {
             if (!isSelectionValid(subSquare.getFields())){
                 return false;
-            };
+            }
         }
 
         // Geen conflicten gevonden

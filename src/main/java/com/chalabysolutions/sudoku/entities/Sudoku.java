@@ -52,22 +52,7 @@ public class Sudoku {
 
     public Sudoku deepCopy() {
         Sudoku copy = new Sudoku(this.size);
-
-        // Copy values and possible values for each field
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                Field original = this.getField(r, c);
-                Field cloned = copy.getField(r, c);
-
-                // Copy final value
-                cloned.setFinalValue(original.getFinalValue());
-
-                // Copy possible values
-                cloned.getPossibleValues().clear();
-                cloned.getPossibleValues().addAll(original.getPossibleValues());
-            }
-        }
-
+        copy.copyFieldsFrom(this);
         return copy;
     }
 
@@ -76,17 +61,18 @@ public class Sudoku {
             throw new IllegalArgumentException("Cannot restore from Sudoku of different size");
         }
 
+        this.copyFieldsFrom(other);
+    }
+
+    private void copyFieldsFrom(Sudoku source) {
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
                 Field target = this.getField(r, c);
-                Field source = other.getField(r, c);
+                Field original = source.getField(r, c);
 
-                // Herstel final value
-                target.setFinalValue(source.getFinalValue());
-
-                // Herstel mogelijke waarden
+                target.setFinalValue(original.getFinalValue());
                 target.getPossibleValues().clear();
-                target.getPossibleValues().addAll(source.getPossibleValues());
+                target.getPossibleValues().addAll(original.getPossibleValues());
             }
         }
     }
@@ -131,19 +117,5 @@ public class Sudoku {
         }
 
         return result.toString();
-    }
-
-    public void print() {
-        for (int r = 0; r < size; r++) {
-            if (r > 0 && r % boxSize == 0) {
-                System.out.println("-".repeat(size * 2 + boxSize - 1));
-            }
-
-            for (int c = 0; c < size; c++) {
-                if (c > 0 && c % boxSize == 0) System.out.print("| ");
-                System.out.print(getField(r, c) + " ");
-            }
-            System.out.println();
-        }
     }
 }
